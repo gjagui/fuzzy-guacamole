@@ -1,0 +1,7 @@
+{
+  "type": "sqlite",
+  "database": "/persistence/database/data,sql",
+  "entities": ["src/entity/*.ts"],
+  "logging": true,
+  "synchronize": true
+}
