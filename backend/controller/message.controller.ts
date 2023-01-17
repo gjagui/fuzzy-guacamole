@@ -19,7 +19,7 @@ export const Messages = async (req: Request, res: Response) => {
             relations: ["user", "subscription", "notification"]
         });
 
-        res.send(messages);
+        return (messages.length === 0) ? res.status(404).send("Not Found") : res.send(messages);
     }
     catch (error) {
         console.log(error);
