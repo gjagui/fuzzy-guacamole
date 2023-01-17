@@ -1,0 +1,9 @@
+{
+  "ignore": [".git", "node_modules/", "dist"],
+  "watch": ["src/*"],
+  "ext": "js, json, ts",
+  "verbose": true,
+  "execMap": {
+    "ts": "node --require ts-node/register"
+  }
+}
