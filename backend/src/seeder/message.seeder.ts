@@ -12,32 +12,38 @@ createConnection().then(async connection => {
         {
             user: { id: 1 },
             notification: { id: 1 },
-            subscription: { id: 1 }
+            subscription: { id: 1 },
+            text: "Alpha text 1"
         },
         {
             user: { id: 1 },
             notification: { id: 2 },
-            subscription: { id: 2 }
+            subscription: { id: 2 },
+            text: "Alpha text 2"
         },
         {
             user: { id: 1 },
             notification: { id: 3 },
-            subscription: { id: 3 }
+            subscription: { id: 3 },
+            text: "Alpha text 3"
         },
         {
             user: { id: 2 },
             notification: { id: 2 },
-            subscription: { id: 2 }
+            subscription: { id: 2 },
+            text: "Beta text 1"
         },
         {
             user: { id: 2 },
             notification: { id: 3 },
-            subscription: { id: 3 }
+            subscription: { id: 3 },
+            text: "Beta text 2"
         },
         {
             user: { id: 3 },
             notification: { id: 3 },
-            subscription: { id: 3 }
+            subscription: { id: 3 },
+            text: "Gamma text 1"
         }
     ];
 

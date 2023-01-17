@@ -13,14 +13,14 @@ createConnection().then(async connection => {
             email: "alpha@alpha.com",
             phoneNumber: 11111111,
             notifications: [
-                { id: 1, type: "sms", description: "SMS" },
-                { id: 2, type: "email", description: "E-Mail" },
-                { id: 3, type: "pn", description: "Push Notification" }
+                { id: 1 },
+                { id: 2 },
+                { id: 3 }
             ],
             subscriptions: [
-                { id: 1, type: "sports", description: "Sports" },
-                { id: 2, type: "finance", description: "Finance" },
-                { id: 3, type: "movies", description: "Movies" },
+                { id: 1 },
+                { id: 2 },
+                { id: 3 },
             ]
         },
         {
@@ -28,12 +28,12 @@ createConnection().then(async connection => {
             email: "beta@beta.com",
             phoneNumber: 22222222,
             notifications: [
-                { id: 2, type: "email", description: "E-Mail" },
-                { id: 3, type: "pn", description: "Push Notification" }
+                { id: 2 },
+                { id: 3 }
             ],
             subscriptions: [
-                { id: 2, type: "finance", description: "Finance" },
-                { id: 3, type: "movies", description: "Movies" },
+                { id: 2 },
+                { id: 3 },
             ]
         },
         {
@@ -41,10 +41,10 @@ createConnection().then(async connection => {
             email: "gamma@gamma.com",
             phoneNumber: 33333333,
             notifications: [
-                { id: 3, type: "pn", description: "Push Notification" }
+                { id: 3 }
             ],
             subscriptions: [
-                { id: 3, type: "movies", description: "Movies" },
+                { id: 3 },
             ]
         }
     ];

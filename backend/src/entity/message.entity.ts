@@ -11,15 +11,18 @@ export class Message {
 
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_id' })
-    user: User
+    user: User;
 
     @ManyToOne(() => Subscription)
     @JoinColumn({ name: 'subscription_id' })
-    subscription: Subscription
+    subscription: Subscription;
 
     @ManyToOne(() => Notification)
     @JoinColumn({ name: 'notification_id' })
-    notification: Notification
+    notification: Notification;
+
+    @Column()
+    text: string;
 
     @CreateDateColumn()
     created_at: string;
