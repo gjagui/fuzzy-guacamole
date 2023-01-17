@@ -26,3 +26,6 @@ coverage
 
 # Ignore .env configuration
 .env
+
+# Persistence
+./persistence
