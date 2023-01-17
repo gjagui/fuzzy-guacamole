@@ -5,7 +5,9 @@ export class Subscription {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     type: string;
 
     @Column()

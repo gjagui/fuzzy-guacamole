@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-
-// import { routers } from './routers';
+import { routers } from './router/router';
 import { createConnection } from 'typeorm';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,7 +11,7 @@ createConnection().then(connection => {
     app.use(express.json());
     app.use(cors());
 
-    // routers(app);
+    routers(app);
 
     app.listen(process.env.PORT, () => {
         console.log(`Listening on port ${process.env.PORT}`)

@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 
-export const routers = (router: Router) => {
+import { Users } from "../../controller/user.controller";
 
+export const routers = (router: Router) => {
+    router.get("/users", Users);
 };
