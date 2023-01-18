@@ -2,8 +2,12 @@ import { createApp } from "vue";
 import App from "@/App.vue";
 import router from "@/router";
 
-const app = createApp(App);
+import axios from "axios";
+axios.defaults.baseURL =
+  import.meta.env.VITE_BASE_URL || "http://localhost:8080/";
 
-app.use(router);
+import "bootstrap/dist/css/bootstrap.min.css";
 
-app.mount("#app");
+createApp(App).use(router).mount("#app");
+
+import "bootstrap/dist/js/bootstrap.js";

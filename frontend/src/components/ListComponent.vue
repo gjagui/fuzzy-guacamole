@@ -1,12 +1,22 @@
 <template>
-  <div>
-    <h1>ListComponent</h1>
-  </div>
+  <select class="form-select" @change="onChange($event)">
+    <option v-for="option in options" :value="option.id" :key="option.id">
+      {{ option.name }}
+    </option>
+  </select>
 </template>
 
 <script>
 export default {
-  name: "ListComponent"
+  name: "ListComponent",
+  props: { options: { type: Array, required: true } },
+  setup(_, context) {
+    const onChange = (event) => context.emit('onSelected', event.target.value);
+
+    return {
+      onChange
+    }
+  }
 }
 </script>
 
