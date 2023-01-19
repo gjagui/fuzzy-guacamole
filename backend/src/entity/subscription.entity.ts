@@ -11,5 +11,5 @@ export class Subscription {
     type: string;
 
     @Column()
-    description: string;
+    name: string;
 }

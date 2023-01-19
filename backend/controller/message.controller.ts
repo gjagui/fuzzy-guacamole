@@ -32,6 +32,7 @@ export const SendMessages = async (req: Request, res: Response) => {
         const messageRepository = getManager().getRepository(Message);
 
         let message = new Message();
+        message.text = req.body.text;
 
         const user = new User();
         user.id = req.body.user_id;

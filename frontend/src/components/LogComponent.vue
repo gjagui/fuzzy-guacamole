@@ -3,28 +3,21 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">User</th>
+        <th scope="col">Category</th>
+        <th scope="col">Channel</th>
+        <th scope="col">Message</th>
+        <th scope="col">Created At</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
+      <tr v-for="message in messages">
+        <th scope="row">{{ message.id }}</th>
+        <td>{{ message.user.name }}</td>
+        <td>{{ message.subscription.name }}</td>
+        <td>{{ message.notification.name }}</td>
+        <td>{{ message.text }}</td>
+        <td>{{ message.created_at }}</td>
       </tr>
     </tbody>
   </table>
@@ -32,6 +25,7 @@
 
 <script>
 export default {
-  name: "ListComponent"
+  name: "ListComponent",
+  props: { messages: { type: Array, required: true } },
 }
 </script>

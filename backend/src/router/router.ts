@@ -7,6 +7,6 @@ export const routers = (router: Router) => {
 
     router.get("/users", Users);
 
-    router.get("/user/:id/message", Messages);
+    router.get("/user/:id/messages", Messages);
     router.post("/message", SendMessages);
 };

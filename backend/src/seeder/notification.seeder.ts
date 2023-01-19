@@ -5,9 +5,9 @@ createConnection().then(async connection => {
     const notificationRepository = getManager().getRepository(Notification);
 
     const notifications = [
-        { type: "sms", description: "SMS" },
-        { type: "email", description: "E-Mail" },
-        { type: "pn", description: "Push Notification" }
+        { type: "sms", name: "SMS" },
+        { type: "email", name: "E-Mail" },
+        { type: "pn", name: "Push Notification" }
     ];
 
     await notificationRepository.insert(notifications);

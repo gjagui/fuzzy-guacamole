@@ -11,5 +11,5 @@ export class Notification {
     type: string;
 
     @Column()
-    description: string;
+    name: string;
 }

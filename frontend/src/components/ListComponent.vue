@@ -11,7 +11,7 @@ export default {
   name: "ListComponent",
   props: { options: { type: Array, required: true } },
   setup(_, context) {
-    const onChange = (event) => context.emit('onSelected', event.target.value);
+    const onChange = (event) => context.emit('onChange', event.target.value);
 
     return {
       onChange
