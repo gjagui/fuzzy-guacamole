@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 
-import { Users } from "../../controller/user.controller";
-import { Messages, SendMessages } from "../../controller/message.controller";
+import { Users } from "../controller/user.controller";
+import { Messages, SendMessages } from "../controller/message.controller";
 
 export const routers = (router: Router) => {
 

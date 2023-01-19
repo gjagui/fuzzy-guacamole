@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 
-import { User } from "../src/entity/user.entity";
+import { User } from "../entity/user.entity";
 
 export const Users = async (req: Request, res: Response) => {
     try {

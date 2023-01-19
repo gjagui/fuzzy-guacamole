@@ -14,13 +14,6 @@
     </div>
 
     <div class="row m-2">
-      <div class="col-2 text-start">Notifications</div>
-      <div class="col-10">
-        <ListComponent :options="userNotifications" @on-change="message.notification_id = $event" />
-      </div>
-    </div>
-
-    <div class="row m-2">
       <div class="col-2 text-start">Subscriptions</div>
       <div class="col-10">
         <ListComponent :options="userSubscriptions" @on-change="message.subscription_id = $event" />
@@ -57,11 +50,9 @@ export default {
   setup() {
     const users = ref([]);
     const messages = ref([]);
-    const userNotifications = ref([]);
     const userSubscriptions = ref([]);
     const message = reactive({
       user_id: null,
-      notification_id: null,
       subscription_id: null,
       text: null
     });
@@ -95,7 +86,6 @@ export default {
     const loadUserIdData = (id) => {
       const user = getUser(id);
       message.user_id = user.id;
-      setUserNotifications(user);
       setUserSubscriptions(user);
       fetchUserMessages(user.id);
     };
@@ -103,11 +93,6 @@ export default {
     const getUser = (id) => {
       return (users.value.filter((user) => user.id == id))[0];
     }
-
-    const setUserNotifications = (user) => {
-      message.notification_id = user.notifications[0].id;
-      userNotifications.value = user.notifications;
-    };
 
     const setUserSubscriptions = (user) => {
       message.subscription_id = user.subscriptions[0].id;
@@ -128,11 +113,10 @@ export default {
 
     return {
       users,
-      messages,
-      userNotifications,
-      userSubscriptions,
       message,
       loadUserIdData,
+      userSubscriptions,
+      messages,
       sendMessage
     }
   }

@@ -34,4 +34,8 @@ export class User {
         inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
     })
     notifications: Notification[];
+
+    hasSubscription(subscription_id: Number): boolean {
+        return !!this.subscriptions.filter(subscription => subscription.id === subscription_id);
+    }
 }
