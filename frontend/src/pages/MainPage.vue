@@ -70,10 +70,14 @@ export default {
       }
     };
 
+    const formatDateTime = (dateTime) => {
+      return dateTime.replace("T", " ").replace(".000Z", " ");
+    };
+
     const fetchUserMessages = async (id) => {
       try {
         const { data } = await axios.get(`user/${id}/messages`);
-        messages.value = data;
+        messages.value = data.map((message) => { return { ...message, created_at: formatDateTime(message.created_at) } });
       }
 
       catch (error) {

@@ -16,7 +16,8 @@ export const Messages = async (req: Request, res: Response) => {
                     id: Number(req.params.id)
                 },
             },
-            relations: ["user", "subscription", "notification"]
+            relations: ["user", "subscription", "notification"],
+            order: { created_at: "DESC" }
         });
 
         return (messages.length === 0) ? res.status(404).send("Not Found") : res.send(messages);
@@ -49,11 +50,11 @@ export const SendMessages = async (req: Request, res: Response) => {
     }
 }
 
-const executeSendMessages = async (user: User, text: string, subscription_id: Number) => {
+const executeSendMessages = (user: User, text: string, subscription_id: Number) => {
     try {
         const messageRepository = getManager().getRepository(Message);
 
-        const messages = await user.notifications.map(async (userNotification) => {
+        const messages = user.notifications.map(async (userNotification) => {
 
             const notification = new Notification();
             notification.id = userNotification.id;
@@ -61,7 +62,7 @@ const executeSendMessages = async (user: User, text: string, subscription_id: Nu
             const subscription = new Subscription();
             subscription.id = Number(subscription_id);
 
-            const message = new Message();
+            let message = new Message();
 
             message.text = text;
             message.user = user;
