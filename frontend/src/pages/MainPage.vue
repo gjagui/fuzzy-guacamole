@@ -66,6 +66,7 @@ export default {
       }
 
       catch (error) {
+        alert("There was a network error fetching users, please try again in a few minutes...");
         console.log(error);
       }
     };
@@ -81,6 +82,7 @@ export default {
       }
 
       catch (error) {
+        alert("There was a network error fetching messages, please try again in a few minutes...");
         console.log(error);
       }
     };
@@ -105,12 +107,16 @@ export default {
 
     const sendMessage = async () => {
       try {
+        if (!message.message || message.text.trim().length === 0) {
+          return alert("The message can't be empty...");
+        };
         await axios.post('message', message);
         fetchUserMessages(message.user_id);
         message.text = null;
       }
 
       catch (error) {
+        alert("There was a network error sending the message, please try again in a few minutes...");
         console.log(error);
       }
     };
