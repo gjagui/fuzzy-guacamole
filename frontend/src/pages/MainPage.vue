@@ -107,7 +107,7 @@ export default {
 
     const sendMessage = async () => {
       try {
-        if (!message.message || message.text.trim().length === 0) {
+        if (!message.text || message.text.trim().length === 0) {
           return alert("The message can't be empty...");
         };
         await axios.post('message', message);
