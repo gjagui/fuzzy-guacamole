@@ -5,21 +5,25 @@ import { AppDataSource } from "../persistence/datasource";
 
 import { Notification } from "../entity/notification.entity";
 
-try {
-    AppDataSource.initialize();
+(async () => {
+    try {
+        await AppDataSource.initialize();
 
-    const notificationRepository = AppDataSource.getRepository(Notification);
+        const notificationRepository = AppDataSource.getRepository(Notification);
 
-    const notifications = [
-        { type: "sms", name: "SMS" },
-        { type: "email", name: "E-Mail" },
-        { type: "pn", name: "Push Notification" }
-    ];
+        const notifications = [
+            { type: "sms", name: "SMS" },
+            { type: "email", name: "E-Mail" },
+            { type: "pn", name: "Push Notification" }
+        ];
 
-    (async () => await notificationRepository.insert(notifications))();
+        await notificationRepository.insert(notifications);
+    }
+    catch (error) {
+        console.log(error);
+    }
 
-    process.exit(0);
-}
-catch (error) {
-    console.log(error);
-}
+    finally {
+        process.exit(0);
+    }
+})();

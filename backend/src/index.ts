@@ -7,20 +7,22 @@ dotenv.config();
 import { AppDataSource } from "./persistence/datasource";
 import { routers } from "./router/router";
 
-try {
-    AppDataSource.initialize();
+(async () => {
+    try {
+        await AppDataSource.initialize();
 
-    const app = express();
+        const app = express();
 
-    app.use(express.json());
-    app.use(cors());
+        app.use(express.json());
+        app.use(cors());
 
-    routers(app);
+        routers(app);
 
-    app.listen(process.env.PORT, () => {
-        console.log(`Listening on port ${process.env.PORT}`);
-    });
-
-} catch (error) {
-    console.log(error);
-}
+        app.listen(process.env.PORT, () => {
+            console.log(`Listening on port ${process.env.PORT}`);
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+})();
