@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getManager } from "typeorm";
+import { AppDataSource } from "../persistence/datasource";
 
 import { Message } from "../entity/message.entity";
 import { User } from "../entity/user.entity";
@@ -10,7 +10,7 @@ export const Messages = async (req: Request, res: Response) => {
     try {
         if (isEmpty(req.params.id)) return res.status(400).send("Bad Request");
 
-        const messageRepository = getManager().getRepository(Message);
+        const messageRepository = AppDataSource.getRepository(Message);
 
         const messages = await messageRepository.find({
             where: {
@@ -34,7 +34,7 @@ export const SendMessages = async (req: Request, res: Response) => {
     try {
         if (isEmpty(req.body.user_id) || isEmpty(req.body.subscription_id) || isEmpty(req.body.text)) return res.status(400).send("Bad Request");
 
-        const userRepository = getManager().getRepository(User);
+        const userRepository = AppDataSource.getRepository(User);
 
         const user = await userRepository.findOne({
             relations: ["subscriptions", "notifications"],
@@ -56,7 +56,7 @@ export const SendMessages = async (req: Request, res: Response) => {
 
 const executeSendMessages = (user: User, text: string, subscription_id: Number) => {
     try {
-        const messageRepository = getManager().getRepository(Message);
+        const messageRepository = AppDataSource.getRepository(Message);
 
         const messages = user.notifications.map(async (userNotification) => {
 

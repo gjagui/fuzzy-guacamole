@@ -1,16 +1,29 @@
-import { createConnection, getManager } from "typeorm";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { AppDataSource } from "../persistence/datasource";
+
 import { Notification } from "../entity/notification.entity";
 
-createConnection().then(async connection => {
-    const notificationRepository = getManager().getRepository(Notification);
+(async () => {
+    try {
+        await AppDataSource.initialize();
 
-    const notifications = [
-        { type: "sms", name: "SMS" },
-        { type: "email", name: "E-Mail" },
-        { type: "pn", name: "Push Notification" }
-    ];
+        const notificationRepository = AppDataSource.getRepository(Notification);
 
-    await notificationRepository.insert(notifications);
+        const notifications = [
+            { type: "sms", name: "SMS" },
+            { type: "email", name: "E-Mail" },
+            { type: "pn", name: "Push Notification" }
+        ];
 
-    process.exit(0);
-});
+        await notificationRepository.insert(notifications);
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+    finally {
+        process.exit(0);
+    }
+})();
