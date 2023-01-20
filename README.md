@@ -24,7 +24,7 @@ On a terminal...
 
 7.- npm run dev
 
-After those steps, the backend service would be running on port 8080 in the local machine.
+After those steps, the backend service should be running on port 8080 in the local machine.
 
 On other terminal...
 
@@ -43,3 +43,5 @@ Go to the root proyect directory and enter to backend directory
 5.- npm run dev
 
 6.- Use a Web Browser and enter to http://localhost:5173/
+
+After those steps, the frontend service should be showing the aplication on the web browser.
