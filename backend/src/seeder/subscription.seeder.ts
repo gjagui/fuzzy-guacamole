@@ -1,8 +1,14 @@
-import { createConnection, getManager } from 'typeorm';
-import { Subscription } from '../entity/subscription.entity';
+import dotenv from "dotenv";
+dotenv.config();
 
-createConnection().then(async connection => {
-    const subscriptionRepository = getManager().getRepository(Subscription);
+import { AppDataSource } from "../persistence/datasource";
+
+import { Subscription } from "../entity/subscription.entity";
+
+try {
+    AppDataSource.initialize();
+
+    const subscriptionRepository = AppDataSource.getRepository(Subscription);
 
     const subscriptions = [
         { type: "sports", name: "Sports" },
@@ -10,7 +16,10 @@ createConnection().then(async connection => {
         { type: "movies", name: "Movies" },
     ];
 
-    await subscriptionRepository.insert(subscriptions);
+    (async () => await subscriptionRepository.insert(subscriptions))();
 
     process.exit(0);
-});
+}
+catch (error) {
+    console.log(error);
+}

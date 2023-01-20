@@ -1,11 +1,15 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import { routers } from './router/router';
-import { createConnection } from 'typeorm';
-import dotenv from 'dotenv';
+import express, { Request, Response } from "express";
+import cors from "cors";
+
+import dotenv from "dotenv";
 dotenv.config();
 
-createConnection().then(connection => {
+import { AppDataSource } from "./persistence/datasource";
+import { routers } from "./router/router";
+
+try {
+    AppDataSource.initialize();
+
     const app = express();
 
     app.use(express.json());
@@ -14,6 +18,9 @@ createConnection().then(connection => {
     routers(app);
 
     app.listen(process.env.PORT, () => {
-        console.log(`Listening on port ${process.env.PORT}`)
+        console.log(`Listening on port ${process.env.PORT}`);
     });
-});
+
+} catch (error) {
+    console.log(error);
+}

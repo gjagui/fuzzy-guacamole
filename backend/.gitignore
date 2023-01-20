@@ -28,4 +28,4 @@ coverage
 .env
 
 # Persistence
-persistence
+data.sqlite3

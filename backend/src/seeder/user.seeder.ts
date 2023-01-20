@@ -1,11 +1,14 @@
-import { createConnection, getManager } from "typeorm";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { AppDataSource } from "../persistence/datasource";
 
 import { User } from "../entity/user.entity";
-import { Notification } from "../entity/notification.entity";
-import { Subscription } from "../entity/subscription.entity";
 
-createConnection().then(async connection => {
-    const userRepository = getManager().getRepository(User);
+try {
+    AppDataSource.initialize();
+
+    const userRepository = AppDataSource.getRepository(User);
 
     const users = [
         {
@@ -49,7 +52,8 @@ createConnection().then(async connection => {
         }
     ];
 
-    await userRepository.save(users);
-
-    process.exit(0);
-});
+    (async () => await userRepository.save(users))();
+}
+catch (error) {
+    console.log(error)
+}

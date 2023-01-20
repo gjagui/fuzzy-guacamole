@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { getManager } from "typeorm";
-
+import { AppDataSource } from "../persistence/datasource";
 import { User } from "../entity/user.entity";
 
 export const Users = async (req: Request, res: Response) => {
     try {
-        const repository = getManager().getRepository(User);
+        const repository = AppDataSource.getRepository(User);
 
         const users = await repository.find({ relations: ["notifications", "subscriptions"] });
 

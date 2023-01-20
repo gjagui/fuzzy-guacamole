@@ -1,8 +1,14 @@
-import { createConnection, getManager } from "typeorm";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { AppDataSource } from "../persistence/datasource";
+
 import { Notification } from "../entity/notification.entity";
 
-createConnection().then(async connection => {
-    const notificationRepository = getManager().getRepository(Notification);
+try {
+    AppDataSource.initialize();
+
+    const notificationRepository = AppDataSource.getRepository(Notification);
 
     const notifications = [
         { type: "sms", name: "SMS" },
@@ -10,7 +16,10 @@ createConnection().then(async connection => {
         { type: "pn", name: "Push Notification" }
     ];
 
-    await notificationRepository.insert(notifications);
+    (async () => await notificationRepository.insert(notifications))();
 
     process.exit(0);
-});
+}
+catch (error) {
+    console.log(error);
+}
