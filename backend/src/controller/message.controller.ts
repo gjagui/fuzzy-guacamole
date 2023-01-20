@@ -44,7 +44,7 @@ export const SendMessages = async (req: Request, res: Response) => {
 
         if (!user || !user.hasSubscription(req.body.subscription_id)) return res.status(404).send("Not Found")
 
-        const messages = await executeSendMessages(user, req.body.text, Number(req.body.subscription_id));
+        const messages = await Promise.all(executeSendMessages(user, req.body.text, Number(req.body.subscription_id)));
 
         res.send(messages);
     }

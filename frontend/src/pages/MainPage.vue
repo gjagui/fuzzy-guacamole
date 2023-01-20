@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import ListComponent from "@/components/ListComponent.vue";
 import LogComponent from "../components/LogComponent.vue";
 import axios from "axios";
