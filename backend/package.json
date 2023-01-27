@@ -8,11 +8,11 @@
     "start": "nodemon src/index.ts",
     "dev": "nodemon --inspect src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:all": "npm run seed:notification && npm run seed:subscription && npm run seed:user && npm run seed:message",
+    "seed:all": "npm run seed:notification && npm run seed:subscription && npm run seed:user && npm run seed:log",
     "seed:user": "ts-node src/seeder/user.seeder.ts",
     "seed:notification": "ts-node src/seeder/notification.seeder.ts",
     "seed:subscription": "ts-node src/seeder/subscription.seeder.ts",
-    "seed:message": "ts-node src/seeder/message.seeder.ts"
+    "seed:log": "ts-node src/seeder/log.seeder.ts"
   },
   "author": "",
   "license": "ISC",

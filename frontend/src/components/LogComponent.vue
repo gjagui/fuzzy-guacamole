@@ -8,16 +8,18 @@
         <th scope="col">Channel</th>
         <th scope="col">Message</th>
         <th scope="col">Created At</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="message in messages">
-        <th scope="row">{{ message.id }}</th>
-        <td>{{ message.user.name }}</td>
-        <td>{{ message.subscription.name }}</td>
-        <td>{{ message.notification.name }}</td>
-        <td>{{ message.text }}</td>
-        <td>{{ message.created_at }}</td>
+      <tr v-for="log in logs">
+        <th scope="row">{{ log.id }}</th>
+        <td>{{ log.user.name }}</td>
+        <td>{{ log.subscription.name }}</td>
+        <td>{{ log.notification.name }}</td>
+        <td>{{ log.text }}</td>
+        <td>{{ log.created_at }}</td>
+        <td :class="[log.status ? 'sent' : 'failed']">{{ log.status ? "sent" : "failed" }}</td>
       </tr>
     </tbody>
   </table>
@@ -26,6 +28,16 @@
 <script>
 export default {
   name: "ListComponent",
-  props: { messages: { type: Array, required: true } },
+  props: { logs: { type: Array, required: true } },
 }
 </script>
+
+<style scoped>
+.sent {
+  color: green;
+}
+
+.failed {
+  color: red;
+}
+</style>

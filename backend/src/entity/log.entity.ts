@@ -5,7 +5,7 @@ import { Subscription } from "./subscription.entity";
 import { Notification } from "./notification.entity";
 
 @Entity()
-export class Message {
+export class Log {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -23,6 +23,9 @@ export class Message {
 
     @Column()
     text: string;
+
+    @Column()
+    status: boolean;
 
     @CreateDateColumn()
     created_at: string;

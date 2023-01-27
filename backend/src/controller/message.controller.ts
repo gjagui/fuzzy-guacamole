@@ -1,84 +1,65 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../persistence/datasource";
 
-import { Message } from "../entity/message.entity";
+import { getUsersBySubscriptionId } from "./user.controller";
+import { logSentUserMessage } from "./log.controller";
+
+import { messageFactory } from "../model/message/messageFactory";
+
 import { User } from "../entity/user.entity";
-import { Subscription } from "../entity/subscription.entity";
 import { Notification } from "../entity/notification.entity";
 
-export const Messages = async (req: Request, res: Response) => {
+export const Message = async (req: Request, res: Response) => {
     try {
-        if (isEmpty(req.params.id)) return res.status(400).send("Bad Request");
+        if (isEmpty(req.body.subscription_id) || isEmpty(req.body.text)) return res.status(400).send("Bad Request");
 
-        const messageRepository = AppDataSource.getRepository(Message);
+        const users = await getUsersBySubscriptionId(Number(req.body.subscription_id));
 
-        const messages = await messageRepository.find({
-            where: {
-                user: {
-                    id: Number(req.params.id)
-                },
-            },
-            relations: ["user", "subscription", "notification"],
-            order: { created_at: "DESC" }
-        });
+        if (users?.length === 0) return res.status(404).send("Not Found");
 
-        return (messages.length === 0) ? res.status(404).send("Not Found") : res.send(messages);
+        await sendAndLogUsersMessages(users, req.body.text, req.body.subscription_id);
+
+        res.send("Messages have been sent");
     }
+
     catch (error) {
         console.log(error);
         res.status(500).send("Internal Server Error");
     }
 }
 
-export const SendMessages = async (req: Request, res: Response) => {
+const sendAndLogUsersMessages = async (users: User[], text: string, subscription_id: number) => {
     try {
-        if (isEmpty(req.body.user_id) || isEmpty(req.body.subscription_id) || isEmpty(req.body.text)) return res.status(400).send("Bad Request");
+        await Promise.all(users.map(async (user) => {
 
-        const userRepository = AppDataSource.getRepository(User);
+            const promises = user.notifications.map(async (notification) => {
+                const status = sendUserMessage(user, notification, text);
+                await logSentUserMessage(user, text, notification.id, subscription_id, status);
+                return;
+            });
 
-        const user = await userRepository.findOne({
-            relations: ["subscriptions", "notifications"],
-            where:
-                { id: Number(req.body.user_id) }
-        });
+            await Promise.all(promises);
 
-        if (!user || !user.hasSubscription(req.body.subscription_id)) return res.status(404).send("Not Found")
+            return;
+        }));
 
-        const messages = await Promise.all(executeSendMessages(user, req.body.text, Number(req.body.subscription_id)));
-
-        res.send(messages);
+        return;
     }
+
     catch (error) {
-        console.log(error);
-        res.status(500).send("Internal Server Error");
+        throw error;
     }
 }
 
-const executeSendMessages = (user: User, text: string, subscription_id: Number) => {
+const sendUserMessage = (user: User, notification: Notification, text: String): boolean => {
     try {
-        const messageRepository = AppDataSource.getRepository(Message);
+        const message = messageFactory(user, text, notification.type);
 
-        const messages = user.notifications.map(async (userNotification) => {
+        if (message === null) throw new Error("Message type is not defined");
 
-            const notification = new Notification();
-            notification.id = userNotification.id;
+        return message.sendMessage();
+    }
 
-            const subscription = new Subscription();
-            subscription.id = Number(subscription_id);
-
-            let message = new Message();
-
-            message.text = text;
-            message.user = user;
-            message.notification = notification;
-            message.subscription = subscription;
-
-            return await messageRepository.save(message);
-        });
-
-        return messages;
-
-    } catch (error) {
+    catch (error) {
         throw error;
     }
 }
