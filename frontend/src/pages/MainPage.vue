@@ -7,22 +7,14 @@
     </div>
 
     <div class="row m-2">
-      <div class="col-2 text-start">User</div>
-      <div class="col-10">
-        <ListComponent :options="users" @on-change="loadUserIdData($event)" />
+      <div class="col-4 text-start">Category Subscriptions</div>
+      <div class="col-8">
+        <ListComponent :options="subscriptions" @on-change="message.subscription_id = $event" />
       </div>
     </div>
 
-    <div class="row m-2">
-      <div class="col-2 text-start">Subscriptions</div>
-      <div class="col-10">
-        <ListComponent :options="userSubscriptions" @on-change="message.subscription_id = $event" />
-      </div>
-    </div>
-
-    <div class="row m-2">
-      <textarea v-model="message.text" class="form-control" placeholder="Leave a message here" id="floatingTextarea"
-        @change="message.text = $event.target.value"></textarea>
+    <div class="row">
+      <textarea v-model="message.text" placeholder="Leave a message here"></textarea>
     </div>
 
     <div class="row m-4">
@@ -31,7 +23,7 @@
 
     <div class="row m-6">
       <div class="col-12">
-        <LogComponent :messages="messages" />
+        <LogComponent :logs="logs" />
       </div>
     </div>
 
@@ -48,70 +40,56 @@ export default {
   name: "MainPage",
   components: { ListComponent, LogComponent },
   setup() {
-    const users = ref([]);
-    const messages = ref([]);
-    const userSubscriptions = ref([]);
+    const logs = ref([]);
+    const subscriptions = ref([]);
     const message = reactive({
-      user_id: null,
       subscription_id: null,
       text: null
     });
 
-    const fetchUsersData = async () => {
+    const fetchLogs = async () => {
       try {
-        const { data } = await axios.get('users');
-        users.value = data;
-        loadUserIdData(users.value[0].id);
-        fetchUserMessages(users.value[0].id);
+        const { data } = await axios.get("logs");
+        logs.value = data.map((log) => { return { ...log, created_at: log?.created_at.replace("T", " ").replace(".000Z", " ") } });
       }
 
       catch (error) {
-        alert("There was a network error fetching users, please try again in a few minutes...");
+        alert("There was a network error fetching logs messages, please try again in a few minutes...");
         console.log(error);
       }
     };
 
-    const formatDateTime = (dateTime) => {
-      return dateTime.replace("T", " ").replace(".000Z", " ");
-    };
-
-    const fetchUserMessages = async (id) => {
+    const fetchSubscriptions = async () => {
       try {
-        const { data } = await axios.get(`user/${id}/messages`);
-        messages.value = data.map((message) => { return { ...message, created_at: formatDateTime(message.created_at) } });
+        const { data } = await axios.get("subscriptions");
+        subscriptions.value = data;
       }
 
       catch (error) {
-        alert("There was a network error fetching messages, please try again in a few minutes...");
+        alert("There was a network error fetching category subscriptions, please try again in a few minutes...");
         console.log(error);
       }
     };
 
-    onMounted(fetchUsersData);
+    const initializeData = async () => {
+      try {
+        await Promise.all([fetchLogs(), fetchSubscriptions()]);
+        message.subscription_id = subscriptions.value[0].id;
+      }
 
-    const loadUserIdData = (id) => {
-      const user = getUser(id);
-      message.user_id = user.id;
-      setUserSubscriptions(user);
-      fetchUserMessages(user.id);
+      catch (error) {
+        console.log(error);
+      }
     };
 
-    const getUser = (id) => {
-      return (users.value.filter((user) => user.id == id))[0];
-    }
-
-    const setUserSubscriptions = (user) => {
-      message.subscription_id = user.subscriptions[0].id;
-      userSubscriptions.value = user.subscriptions;
-    };
+    onMounted(initializeData);
 
     const sendMessage = async () => {
       try {
-        if (!message.text || message.text.trim().length === 0) {
-          return alert("The message can't be empty...");
-        };
+        if (!message.text || message.text.trim().length === 0) return alert("The message can't be empty...");
+
         await axios.post('message', message);
-        fetchUserMessages(message.user_id);
+        await fetchLogs();
         message.text = null;
       }
 
@@ -122,11 +100,9 @@ export default {
     };
 
     return {
-      users,
+      subscriptions,
+      logs,
       message,
-      loadUserIdData,
-      userSubscriptions,
-      messages,
       sendMessage
     }
   }

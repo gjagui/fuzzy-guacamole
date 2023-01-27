@@ -1,17 +1,23 @@
-import { Request, Response } from "express";
 import { AppDataSource } from "../persistence/datasource";
 import { User } from "../entity/user.entity";
 
-export const Users = async (req: Request, res: Response) => {
+export const getUsersBySubscriptionId = async (subscription_id: Number) => {
     try {
-        const repository = AppDataSource.getRepository(User);
+        const userRepository = AppDataSource.getRepository(User);
 
-        const users = await repository.find({ relations: ["notifications", "subscriptions"] });
+        const users = await userRepository.find({
+            relations: ["subscriptions", "notifications"],
+            where:
+            {
+                subscriptions:
+                    { id: Number(subscription_id) }
+            }
+        });
 
-        res.send(users);
+        return users;
     }
     catch (error) {
         console.log(error);
-        res.status(500).send("Internal Server Error");
+        throw error;
     }
 }
