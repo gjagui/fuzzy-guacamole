@@ -30,7 +30,7 @@ On other terminal...
 
 Frontend Service
 
-Go to the root proyect directory and enter to backend directory
+Go to the root proyect directory and enter to fronted directory
 
 1.- cd fuzzy-guacamole
 
